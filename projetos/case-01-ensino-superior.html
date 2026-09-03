@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Case 01 — Inteligência de Mercado: Ensino Superior — Francisco Biral Klas</title>
+  <meta name="description" content="Análise de mercado do ensino superior brasileiro com dados públicos do INEP.">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="container">
+    <a class="brand" href="../index.html">Francisco Biral Klas</a>
+    <nav>
+      <a href="../index.html">Início</a>
+      <a href="../projetos.html" aria-current="page">Projetos</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <!-- ===== CABEÇALHO DO CASE ===== -->
+    <div class="case-header">
+      <span class="tag muted small">CASE 01</span>
+      <h1>Inteligência de Mercado — Ensino Superior</h1>
+      <p class="subtitle">Panorama de oferta, demanda e concorrência no ensino superior brasileiro <span class="status">Em construção</span></p>
+    </div>
+
+    <dl class="case-meta">
+      <dt>Área</dt><dd>Market Intelligence · Business Analysis</dd>
+      <dt>Ferramentas</dt><dd>Power BI, Excel, Python (limpeza de dados)</dd>
+      <dt>Fontes</dt><dd>Dados públicos — INEP / Censo da Educação Superior</dd>
+      <dt>Período</dt><dd>2026</dd>
+    </dl>
+
+    <!-- ===== 1. PROBLEMA DE NEGÓCIO ===== -->
+    <h2>Problema de negócio</h2>
+    <p>
+      <!-- EDITAR -->
+      Uma instituição de ensino superior precisa decidir onde e em quais cursos concentrar
+      investimentos de expansão. A pergunta central: quais combinações de região, modalidade
+      (presencial/EAD) e área de conhecimento apresentam crescimento de demanda com concorrência
+      ainda pouco consolidada?
+    </p>
+
+    <!-- ===== 2. CONTEXTO ===== -->
+    <h2>Contexto</h2>
+    <p>
+      <!-- EDITAR -->
+      O ensino superior privado brasileiro passou por forte migração para o EAD na última década,
+      com concentração de matrículas em poucos grupos educacionais. Decisões de portfólio de cursos
+      e de abertura de polos dependem de leitura regional da demanda e do posicionamento dos
+      concorrentes.
+    </p>
+
+    <!-- ===== 3. FONTES DE DADOS ===== -->
+    <h2>Fontes de dados</h2>
+    <table>
+      <thead><tr><th>Fonte</th><th>Conteúdo</th><th>Acesso</th></tr></thead>
+      <tbody>
+        <!-- EDITAR: uma linha por fonte -->
+        <tr><td>INEP — Censo da Educação Superior</td><td>Matrículas, ingressantes, concluintes, cursos e IES por município</td><td>Público (microdados)</td></tr>
+        <tr><td>INEP — Cadastro e-MEC</td><td>Cadastro de instituições e cursos autorizados</td><td>Público</td></tr>
+        <tr><td>IBGE</td><td>População por faixa etária e município</td><td>Público</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">Nenhum dado confidencial. Todas as bases são públicas e citadas na íntegra.</p>
+
+    <!-- ===== 4. FERRAMENTAS ===== -->
+    <h2>Ferramentas utilizadas</h2>
+    <ul>
+      <!-- EDITAR -->
+      <li><strong>Power BI</strong> — modelagem, DAX e visualização.</li>
+      <li><strong>Excel</strong> — validação de totais e cálculos auxiliares.</li>
+      <li><strong>Python (pandas)</strong> — leitura e limpeza dos microdados.</li>
+    </ul>
+
+    <!-- ===== 5. METODOLOGIA ===== -->
+    <h2>Metodologia</h2>
+    <ol>
+      <!-- EDITAR -->
+      <li>Definição das perguntas de negócio e das métricas (matrículas, crescimento, share, concentração).</li>
+      <li>Extração e limpeza dos microdados; padronização de códigos de município, curso e IES.</li>
+      <li>Modelagem em esquema estrela no Power BI (fatos: matrículas; dimensões: tempo, geografia, curso, IES).</li>
+      <li>Construção das análises e validação cruzada com as sinopses estatísticas oficiais.</li>
+      <li>Síntese dos insights e recomendações.</li>
+    </ol>
+
+    <!-- ===== 6. PRINCIPAIS ANÁLISES ===== -->
+    <h2>Principais análises</h2>
+    <ul>
+      <!-- EDITAR -->
+      <li>Evolução de matrículas por modalidade e categoria administrativa.</li>
+      <li>Participação de mercado (share) e concentração (HHI) por região e área de conhecimento.</li>
+      <li>Matriz crescimento × concentração para identificar oportunidades.</li>
+      <li>Taxa de penetração (matrículas / população 18–24 anos) por município.</li>
+    </ul>
+
+    <!-- ===== 7. PRINCIPAIS INSIGHTS ===== -->
+    <h2>Principais insights</h2>
+    <ul>
+      <!-- EDITAR: 3 a 5 insights, cada um com o número que o sustenta -->
+      <li>Insight 1 — a definir após a análise.</li>
+      <li>Insight 2 — a definir após a análise.</li>
+      <li>Insight 3 — a definir após a análise.</li>
+    </ul>
+
+    <!-- ===== 8. SCREENSHOTS ===== -->
+    <h2>Screenshots</h2>
+    <!--
+      Para cada imagem: salve em ../assets/img/case-01/ e troque o bloco
+      .placeholder-img pelo <img>. Exemplo:
+      <figure>
+        <img src="../assets/img/case-01/01-visao-geral.png" alt="Visão geral do dashboard">
+        <figcaption>Visão geral: matrículas por modalidade, 2015–2024.</figcaption>
+      </figure>
+    -->
+    <figure>
+      <div class="placeholder-img">Screenshot 1 — visão geral do dashboard (a adicionar)</div>
+      <figcaption>Visão geral: matrículas por modalidade e categoria administrativa.</figcaption>
+    </figure>
+    <figure>
+      <div class="placeholder-img">Screenshot 2 — análise regional (a adicionar)</div>
+      <figcaption>Share e concentração por região e área de conhecimento.</figcaption>
+    </figure>
+
+    <!-- ===== 9. POWER BI ===== -->
+    <h2>Relatório interativo (Power BI)</h2>
+    <!--
+      Quando tiver o link "Publish to web":
+      1. cole a URL no href do botão abaixo;
+      2. descomente o bloco .powerbi e cole a mesma URL no src do iframe.
+      Se não houver embed, apague o bloco .powerbi e mantenha só o botão (ou remova a seção).
+    -->
+    <p class="links">
+      <a class="btn" href="#" target="_blank" rel="noopener">Abrir relatório no Power BI</a>
+    </p>
+    <p class="small muted">Embed ainda não publicado. O relatório será disponibilizado via Power BI Publish to Web (dados públicos).</p>
+
+    <!--
+    <div class="powerbi">
+      <div class="frame">
+        <iframe title="Case 01 — Ensino Superior" src="https://app.powerbi.com/view?r=COLE_AQUI" allowfullscreen="true"></iframe>
+      </div>
+      <p class="note">Relatório interativo. Em telas pequenas, recomenda-se abrir em tela cheia ou no desktop.</p>
+    </div>
+    -->
+
+    <!-- ===== 10. LIMITAÇÕES ===== -->
+    <h2>Limitações</h2>
+    <ul>
+      <!-- EDITAR -->
+      <li>Dados do Censo têm defasagem de cerca de um ano em relação à data de publicação.</li>
+      <li>Matrículas EAD são registradas na sede da IES, o que limita a leitura por polo/município.</li>
+      <li>Não há dados públicos de preço (mensalidade) por curso, o que impede análise de receita.</li>
+    </ul>
+
+    <!-- ===== 11. CONCLUSÃO / RECOMENDAÇÃO ===== -->
+    <h2>Conclusão e recomendação</h2>
+    <p>
+      <!-- EDITAR -->
+      A definir após conclusão da análise. Estrutura prevista: síntese em 3 frases, seguida de
+      2–3 recomendações priorizadas com o racional e o risco de cada uma.
+    </p>
+
+    <nav class="case-nav">
+      <a href="../projetos.html">← Todos os projetos</a>
+      <a href="case-02-market-intelligence.html">Case 02 →</a>
+    </nav>
+
+  </div>
+</main>
+
+<footer class="site">
+  <div class="container">
+    Francisco Biral Klas · <a href="https://www.linkedin.com/in/francisco-klas/" target="_blank" rel="noopener">LinkedIn</a>
+    · Todos os projetos usam exclusivamente dados públicos ou sintéticos.
+  </div>
+</footer>
+
+</body>
+</html>

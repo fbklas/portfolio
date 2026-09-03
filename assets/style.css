@@ -1,0 +1,265 @@
+/* ============================================================
+   Portfolio — Francisco Biral Klas
+   Único arquivo de estilo. Cores e medidas ficam nas variáveis.
+   ============================================================ */
+
+:root {
+  --text: #1a1a1a;
+  --muted: #5c5c5c;
+  --line: #e4e4e4;
+  --bg: #ffffff;
+  --bg-soft: #f7f7f7;
+  --link: #1a1a1a;
+  --accent: #1f4e79;          /* azul sóbrio, usado só em links/hover */
+  --max: 760px;               /* largura da coluna de leitura */
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+}
+
+/* ---------- Layout ---------- */
+
+.container {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+header.site {
+  border-bottom: 1px solid var(--line);
+}
+
+header.site .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+
+header.site .brand {
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+header.site nav a {
+  margin-left: 24px;
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+header.site nav a:hover,
+header.site nav a[aria-current="page"] { color: var(--text); }
+
+main { padding: 56px 0 80px; }
+
+footer.site {
+  border-top: 1px solid var(--line);
+  padding: 32px 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ---------- Tipografia ---------- */
+
+h1, h2, h3 {
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+h1 { font-size: 34px; }
+h2 { font-size: 22px; margin-top: 48px; }
+h3 { font-size: 18px; margin-top: 28px; }
+
+p { margin: 0 0 16px; }
+
+a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+a:hover { color: var(--accent); }
+
+ul, ol { padding-left: 22px; margin: 0 0 16px; }
+li { margin-bottom: 6px; }
+
+.lead { font-size: 19px; color: var(--muted); margin-bottom: 28px; }
+
+.subtitle {
+  color: var(--muted);
+  font-size: 17px;
+  margin: 4px 0 24px;
+}
+
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
+
+hr { border: 0; border-top: 1px solid var(--line); margin: 48px 0; }
+
+/* ---------- Links de ação (não são "botões de startup") ---------- */
+
+.links { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-bottom: 16px; }
+
+.btn {
+  display: inline-block;
+  padding: 9px 16px;
+  border: 1px solid var(--text);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 15px;
+  background: var(--bg);
+}
+.btn:hover { background: var(--text); color: var(--bg); }
+
+/* ---------- Lista de projetos (cards discretos) ---------- */
+
+.project-list { list-style: none; padding: 0; margin: 0; }
+
+.project-list li {
+  border-top: 1px solid var(--line);
+  padding: 28px 0;
+  margin: 0;
+}
+.project-list li:last-child { border-bottom: 1px solid var(--line); }
+
+.project-list .tag {
+  display: block;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.project-list h3 { margin: 0 0 8px; font-size: 20px; }
+.project-list h3 a { text-decoration: none; }
+.project-list h3 a:hover { text-decoration: underline; }
+
+.project-list p { margin-bottom: 8px; }
+
+.project-list .meta { font-size: 14px; color: var(--muted); }
+
+/* ---------- Página de case ---------- */
+
+.case-header { margin-bottom: 8px; }
+
+.case-meta {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 8px 16px;
+  font-size: 15px;
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin: 24px 0 8px;
+}
+.case-meta dt { color: var(--muted); }
+.case-meta dd { margin: 0; }
+
+.status {
+  display: inline-block;
+  font-size: 13px;
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+  color: var(--muted);
+  vertical-align: middle;
+}
+
+/* screenshots */
+figure { margin: 24px 0; }
+figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+}
+figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; }
+
+/* placeholder enquanto não há imagem */
+.placeholder-img {
+  border: 1px dashed #c8c8c8;
+  background: var(--bg-soft);
+  color: var(--muted);
+  font-size: 14px;
+  padding: 72px 16px;
+  text-align: center;
+}
+
+/* Power BI */
+.powerbi {
+  margin: 24px 0;
+}
+.powerbi .frame {
+  position: relative;
+  width: 100%;
+  /* 16:9 + barra inferior do Power BI */
+  padding-top: 62.5%;
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+}
+.powerbi iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.powerbi .note { font-size: 14px; color: var(--muted); margin-top: 8px; }
+
+/* tabela simples (fontes de dados, ferramentas) */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  margin: 0 0 16px;
+}
+th, td {
+  text-align: left;
+  padding: 8px 8px 8px 0;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th { font-weight: 600; color: var(--muted); font-size: 14px; }
+
+/* navegação entre cases */
+.case-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 15px;
+}
+
+/* ---------- Responsivo ---------- */
+
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  h1 { font-size: 28px; }
+  h2 { font-size: 20px; }
+  main { padding: 36px 0 60px; }
+  header.site nav a { margin-left: 16px; }
+  .case-meta { grid-template-columns: 1fr; gap: 2px 0; }
+  .case-meta dt { margin-top: 10px; }
+  .case-meta dt:first-child { margin-top: 0; }
+}
+
+/* ---------- Impressão (recrutador pode salvar em PDF) ---------- */
+
+@media print {
+  header.site nav, footer.site, .case-nav, .powerbi { display: none; }
+  body { font-size: 12pt; }
+  a { text-decoration: none; color: var(--text); }
+}
