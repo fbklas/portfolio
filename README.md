@@ -1,4 +1,4 @@
-# Portfólio — Francisco Biral Klas
+# Portfólio
 
 Site estático (HTML + CSS puro) para apresentar cases de Business Intelligence / Market Intelligence.
 Sem framework, sem build, sem dependências. Hospedado no GitHub Pages.
