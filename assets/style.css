@@ -187,6 +187,15 @@ figure img {
 }
 figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; }
 
+/* figura mais larga que a coluna de texto (screenshots de dashboard) */
+figure.wide {
+  width: min(1100px, calc(100vw - 48px));
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+figure.wide figcaption { max-width: var(--max); margin-left: auto; margin-right: auto; }
+figure a { display: block; }
+
 /* placeholder enquanto não há imagem */
 .placeholder-img {
   border: 1px dashed #c8c8c8;

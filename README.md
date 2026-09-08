@@ -126,6 +126,10 @@ Regras do **Publish to web** que importam:
 
 ### 6.2 Passo a passo
 
+**Antes de publicar o V5 (só uma vez):** no Power BI Desktop, clique com o botão direito em cada uma das
+quatro abas `VISUAL_CANON_LIBRARY*` → **Ocultar página**. Páginas ocultas não aparecem no relatório
+publicado; sem isso, o recrutador veria as páginas de teste. Salve.
+
 1. Publique o `.pbix` na sua **My Workspace** no Power BI Service (app.powerbi.com).
 2. Abra o relatório → **File → Embed report → Publish to web (public)** → *Create embed code*.
 3. Copie o **link** (`https://app.powerbi.com/view?r=...`) e o **código do iframe**.
@@ -197,6 +201,18 @@ O endereço vira `https://SEU-USUARIO.github.io/`.
 ---
 
 ## 8. Atualizar o site depois
+
+### 8.1 Pelo navegador (sem Git instalado — o método usado até agora)
+
+1. Abra https://github.com/fbklas/portfolio.
+2. Entre na pasta onde o arquivo vive (ex.: `projetos/` para uma página de case, `assets/img/case-01/` para imagens).
+3. **Add file → Upload files** → arraste os arquivos (ou a pasta inteira) → escreva uma mensagem → **Commit changes**.
+   Um arquivo com o mesmo nome substitui o anterior.
+4. Para substituir **vários arquivos em pastas diferentes de uma vez** (o caso mais comum depois de uma
+   atualização grande): fique na **raiz** do repositório, **Add file → Upload files** e arraste o *conteúdo*
+   da pasta do site (não a pasta em si). O GitHub mantém a estrutura de subpastas e substitui o que já existia.
+
+### 8.2 Com Git / GitHub Desktop
 
 Edite os arquivos, depois:
 

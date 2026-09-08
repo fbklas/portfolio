@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Case 01 — Inteligência de Mercado: Ensino Superior — Francisco Biral Klas</title>
-  <meta name="description" content="Análise de mercado do ensino superior brasileiro com dados públicos do INEP.">
+  <title>Case 01 — PUCPR 2020–2024: análise de mercado, competição e portfólio — Francisco Biral Klas</title>
+  <meta name="description" content="Inteligência de mercado no ensino superior: posição competitiva da PUCPR a partir do Censo da Educação Superior (INEP) 2020–2024, em Power BI.">
   <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
@@ -24,36 +24,47 @@
 
     <!-- ===== CABEÇALHO DO CASE ===== -->
     <div class="case-header">
-      <span class="tag muted small">CASE 01</span>
-      <h1>Inteligência de Mercado — Ensino Superior</h1>
-      <p class="subtitle">Panorama de oferta, demanda e concorrência no ensino superior brasileiro <span class="status">Em construção</span></p>
+      <span class="tag muted small">CASE 01 · INTELIGÊNCIA DE MERCADO — ENSINO SUPERIOR</span>
+      <h1>PUCPR 2020–2024: análise de mercado, competição e portfólio</h1>
+      <p class="subtitle">Uma leitura estratégica do Censo da Educação Superior: onde a PUCPR cresceu, onde ganhou ou perdeu posição e quais perguntas o dado público permite formular.</p>
     </div>
 
     <dl class="case-meta">
-      <dt>Área</dt><dd>Market Intelligence · Business Analysis</dd>
-      <dt>Ferramentas</dt><dd>Power BI, Excel, Python (limpeza de dados)</dd>
-      <dt>Fontes</dt><dd>Dados públicos — INEP / Censo da Educação Superior</dd>
-      <dt>Período</dt><dd>2026</dd>
+      <dt>Área</dt><dd>Market Intelligence · Análise competitiva · Estratégia de portfólio</dd>
+      <dt>Ferramentas</dt><dd>Power BI (modelo tabular, DAX, PBIP/PBIR), Python (pandas, DuckDB), Excel</dd>
+      <dt>Fontes</dt><dd>Microdados públicos do Censo da Educação Superior — INEP, edições 2020 a 2024</dd>
+      <dt>Entregáveis</dt><dd>Dashboard Power BI com 11 páginas narrativas · relatório analítico executivo · guia de manutenção do modelo</dd>
+      <dt>Período</dt><dd>Agosto–setembro de 2026 · projeto independente</dd>
     </dl>
 
     <!-- ===== 1. PROBLEMA DE NEGÓCIO ===== -->
     <h2>Problema de negócio</h2>
     <p>
-      <!-- EDITAR -->
-      Uma instituição de ensino superior precisa decidir onde e em quais cursos concentrar
-      investimentos de expansão. A pergunta central: quais combinações de região, modalidade
-      (presencial/EAD) e área de conhecimento apresentam crescimento de demanda com concorrência
-      ainda pouco consolidada?
+      Entre 2020 e 2024 a PUCPR passou de 23.130 para 29.041 matrículas de graduação (+25,6%). A frase é
+      verdadeira e, sozinha, descreve mal a instituição. A pergunta que orientou o projeto foi: <strong>como
+      a PUCPR está posicionada no mercado de ensino superior — em volume, share, portfólio, financiamento e
+      perfil do aluno — frente a Curitiba, ao Paraná e ao Brasil, e o que essa posição implica para decisões
+      de portfólio e de defesa de mercado?</strong>
+    </p>
+    <p>
+      O caso foi construído do ponto de vista de uma diretoria de planejamento e estratégia: separar as
+      histórias que o número agregado mistura (modalidade, geografia, mercado, portfólio e posição
+      competitiva) e chegar a uma agenda de questões localizadas, cada uma sustentada por um fato observável.
     </p>
 
     <!-- ===== 2. CONTEXTO ===== -->
     <h2>Contexto</h2>
     <p>
-      <!-- EDITAR -->
-      O ensino superior privado brasileiro passou por forte migração para o EAD na última década,
-      com concentração de matrículas em poucos grupos educacionais. Decisões de portfólio de cursos
-      e de abertura de polos dependem de leitura regional da demanda e do posicionamento dos
-      concorrentes.
+      O ensino superior brasileiro viveu, no período, dois movimentos opostos: o presencial recuou 9,6%
+      (5,58 para 5,04 milhões de matrículas) e o EAD cresceu 67% (3,11 para 5,19 milhões). No Paraná, o
+      presencial caiu 6,9%; em Curitiba, o mercado presencial encolheu 0,9%, com a rede pública crescendo
+      9,9% e a privada recuando 5,4%. Nesse cenário, "crescer no presencial" significa, na prática, ganhar
+      posição num mercado que não cresce.
+    </p>
+    <p>
+      O Censo da Educação Superior é a única base que compara todas as instituições do país na mesma régua.
+      É declaratória e agregada por curso, instituição e município — o que define tanto seu valor
+      (comparabilidade universal) quanto seus limites (não há preço, receita, coortes ou trajetórias de alunos).
     </p>
 
     <!-- ===== 3. FONTES DE DADOS ===== -->
@@ -61,110 +72,160 @@
     <table>
       <thead><tr><th>Fonte</th><th>Conteúdo</th><th>Acesso</th></tr></thead>
       <tbody>
-        <!-- EDITAR: uma linha por fonte -->
-        <tr><td>INEP — Censo da Educação Superior</td><td>Matrículas, ingressantes, concluintes, cursos e IES por município</td><td>Público (microdados)</td></tr>
-        <tr><td>INEP — Cadastro e-MEC</td><td>Cadastro de instituições e cursos autorizados</td><td>Público</td></tr>
-        <tr><td>IBGE</td><td>População por faixa etária e município</td><td>Público</td></tr>
+        <tr><td>INEP — Censo da Educação Superior, microdados de cursos (2020–2024)</td><td>Matrículas, ingressantes, concluintes, vagas, inscritos, financiamento (ProUni, FIES), perfil etário, turno, forma de ingresso, cor/raça — por curso × instituição × município × ano (≈2,75 milhões de linhas)</td><td>Público</td></tr>
+        <tr><td>INEP — Censo da Educação Superior, microdados de instituições (2020–2024)</td><td>Categoria administrativa, organização acadêmica, rede pública/privada</td><td>Público</td></tr>
+        <tr><td>Tabela de marcas (construída no projeto)</td><td>2.945 códigos de instituição mapeados para marcas consolidadas (grupos como Positivo, UniCuritiba e Cesumar operam com mais de um código)</td><td>Derivada</td></tr>
       </tbody>
     </table>
-    <p class="small muted">Nenhum dado confidencial. Todas as bases são públicas e citadas na íntegra.</p>
+    <p class="small muted">Nenhum dado confidencial. Todo o projeto usa exclusivamente dados públicos; a PUCPR não participou nem encomendou o trabalho.</p>
 
     <!-- ===== 4. FERRAMENTAS ===== -->
     <h2>Ferramentas utilizadas</h2>
     <ul>
-      <!-- EDITAR -->
-      <li><strong>Power BI</strong> — modelagem, DAX e visualização.</li>
-      <li><strong>Excel</strong> — validação de totais e cálculos auxiliares.</li>
-      <li><strong>Python (pandas)</strong> — leitura e limpeza dos microdados.</li>
+      <li><strong>Python (pandas, DuckDB)</strong> — leitura e padronização dos microdados brutos (164 colunas por ano), auditoria de consistência, análise exploratória e geração das tabelas analíticas importadas pelo BI.</li>
+      <li><strong>Power BI</strong> — modelo tabular em esquema estrela com ~180 medidas DAX; relatório autorado em formato PBIP/PBIR (JSON versionável), com validação estrutural por CLI e conferência de 32 âncoras numéricas contra o motor DAX.</li>
+      <li><strong>Excel</strong> — validação cruzada de totais contra as sinopses estatísticas oficiais.</li>
     </ul>
 
     <!-- ===== 5. METODOLOGIA ===== -->
     <h2>Metodologia</h2>
     <ol>
-      <!-- EDITAR -->
-      <li>Definição das perguntas de negócio e das métricas (matrículas, crescimento, share, concentração).</li>
-      <li>Extração e limpeza dos microdados; padronização de códigos de município, curso e IES.</li>
-      <li>Modelagem em esquema estrela no Power BI (fatos: matrículas; dimensões: tempo, geografia, curso, IES).</li>
-      <li>Construção das análises e validação cruzada com as sinopses estatísticas oficiais.</li>
-      <li>Síntese dos insights e recomendações.</li>
+      <li><strong>Definição das perguntas e das réguas de leitura.</strong> Brasil, Paraná e Curitiba como referências; presencial e EAD sempre separados; Curitiba definida pelo município do curso, não pela sede da instituição.</li>
+      <li><strong>Harmonização.</strong> Rótulos de curso que mudam entre anos foram fundidos num rótulo único (sem isso, Engenharia de computação apareceria como um curso em alta e outro em queda). Instituições consolidadas por marca.</li>
+      <li><strong>Cortes de materialidade</strong> para evitar variações extremas sobre bases pequenas: marcas com ≥1.500 matrículas, cursos com mercado ≥400 e PUCPR ≥100, pressão de demanda em cursos com ≥800 matrículas no estado. Os cortes definem o universo; o que é exibido é um subconjunto, e reduzir o exibido não altera nenhum cálculo.</li>
+      <li><strong>Tratamento explícito dos problemas de dado</strong> (série de inscritos quebrada em 2022, pico isolado de FIES em 2021, mecanismos de financiamento sobrepostos, alta não declaração de cor/raça) — cada um documentado numa página própria do relatório.</li>
+      <li><strong>Decomposição do crescimento</strong> como identidade contábil: Δ matrículas = efeito mercado (exposição a cursos que cresceram) + expansão do portfólio (cursos novos) + efeito posição (variação de share dentro dos cursos existentes).</li>
+      <li><strong>Sinais antecedentes</strong>: momentum (share de ingressantes − share de matrículas) e similaridade de portfólio entre marcas (cosseno), tratados como indicação, nunca como previsão.</li>
+      <li><strong>Regra editorial</strong>: todo percentual acompanhado do denominador; nenhuma linguagem causal ("migração", "roubou alunos", "evasão") — o Censo não a sustenta.</li>
     </ol>
 
     <!-- ===== 6. PRINCIPAIS ANÁLISES ===== -->
     <h2>Principais análises</h2>
     <ul>
-      <!-- EDITAR -->
-      <li>Evolução de matrículas por modalidade e categoria administrativa.</li>
-      <li>Participação de mercado (share) e concentração (HHI) por região e área de conhecimento.</li>
-      <li>Matriz crescimento × concentração para identificar oportunidades.</li>
-      <li>Taxa de penetração (matrículas / população 18–24 anos) por município.</li>
+      <li>Reconciliação institucional: 29.041 = 18.159 presencial + 10.882 EAD; +5.911 = −390 presencial + 6.301 EAD; campi (Curitiba, Londrina, Toledo, Maringá) somados um a um.</li>
+      <li>Share em Curitiba presencial (mercado total e entre privadas), share de ingressantes, concentração (HHI e Top-5 por marca) e ranking de ganhos e perdas por marca.</li>
+      <li>Ponte do crescimento em Curitiba: efeito mercado, expansão do portfólio e efeito posição, por curso e por marca.</li>
+      <li>Batalha por curso: para cada curso estratégico, quem ficou com a expansão do mercado e o que aconteceu com a posição da PUCPR.</li>
+      <li>Momentum por curso e por marca; radar de mercados sem oferta da PUCPR; pressão de demanda (inscritos ÷ vagas) no benchmark externo.</li>
+      <li>EAD: decomposição do crescimento dos cinco cursos motores contra o mercado nacional e contra os polos do Paraná.</li>
+      <li>Financiamento (ProUni, FIES, total financiado) e perfil do aluno (idade, turno, forma de ingresso, cor/raça) contra três benchmarks ex-PUCPR.</li>
     </ul>
 
     <!-- ===== 7. PRINCIPAIS INSIGHTS ===== -->
     <h2>Principais insights</h2>
     <ul>
-      <!-- EDITAR: 3 a 5 insights, cada um com o número que o sustenta -->
-      <li>Insight 1 — a definir após a análise.</li>
-      <li>Insight 2 — a definir após a análise.</li>
-      <li>Insight 3 — a definir após a análise.</li>
+      <li><strong>Mais de 100% do crescimento líquido veio do EAD.</strong> O EAD foi de 4.581 para 10.882 matrículas (+6.301); o presencial, somados todos os campi, recuou de 18.549 para 18.159 (−390), sobretudo pelo encerramento de Maringá (−841).</li>
+      <li><strong>Em Curitiba a PUCPR cresceu e ganhou share, mas não por fortalecimento dentro dos cursos.</strong> +476 matrículas num mercado que encolheu 0,9%; share de 13,6% para 14,2%. A decomposição muda a leitura: +476 = +686 de efeito mercado + 468 de cursos novos − 678 de efeito posição nos cursos em que já competia.</li>
+      <li><strong>Entre as privadas, o avanço foi três vezes maior</strong>: share de 19,3% para 21,0% (+1,8 p.p.), porque a rede pública cresceu 9,9% enquanto a privada recuou 5,4%. O share de ingressantes (14,9%) acima do share de estoque (14,2%) é um sinal antecedente potencial.</li>
+      <li><strong>A Positivo emerge como benchmark competitivo de portfólio</strong>: similaridade 0,83 com a PUCPR, maior momentum de entrada do mercado (+4,0 p.p. contra +0,7) e maior ganho de posição em Odontologia e Ciência da computação.</li>
+      <li><strong>O portfólio presencial tem nomes.</strong> Fortalezas: Ciência da computação e Design (ganho de posição +131 e +114). Tensões: Psicologia, Odontologia e Medicina (efeito posição −448, −155 e −82 em mercados em forte crescimento). Caso especial: Engenharia de software — mercado +799%, PUCPR ainda 1ª marca (37,9%), mas share −7,4 p.p. numa expansão pulverizada por entrantes. Espaço em branco: Biomedicina (+80%, 14 marcas, sem oferta da PUCPR).</li>
+      <li><strong>No EAD a PUCPR ganhou posição, não só acompanhou o mercado.</strong> Cinco cursos respondem por 4.812 das 6.301 matrículas adicionais (76%); decompostos, são +1.717 de efeito mercado e +3.095 de efeito posição.</li>
+      <li><strong>Acesso é diferencial estrutural</strong>: 22,5% das matrículas presenciais no ProUni, contra 8,4% no privado de Curitiba ex-PUCPR e 9,0% no privado do Paraná; aluno mais jovem (83,7% até 24 anos) e mais diurno (26,2% no noturno contra 62,4% no benchmark).</li>
     </ul>
 
     <!-- ===== 8. SCREENSHOTS ===== -->
-    <h2>Screenshots</h2>
-    <!--
-      Para cada imagem: salve em ../assets/img/case-01/ e troque o bloco
-      .placeholder-img pelo <img>. Exemplo:
-      <figure>
-        <img src="../assets/img/case-01/01-visao-geral.png" alt="Visão geral do dashboard">
-        <figcaption>Visão geral: matrículas por modalidade, 2015–2024.</figcaption>
-      </figure>
-    -->
-    <figure>
-      <div class="placeholder-img">Screenshot 1 — visão geral do dashboard (a adicionar)</div>
-      <figcaption>Visão geral: matrículas por modalidade e categoria administrativa.</figcaption>
+    <h2>O dashboard (11 páginas)</h2>
+    <p class="muted">
+      O relatório segue uma narrativa: síntese → mercado → posição competitiva → de onde veio o crescimento →
+      batalha por curso → momentum → portfólio → EAD → financiamento → perfil → método. Cada página tem
+      uma pergunta no título e uma leitura curta no rodapé, com as cautelas correspondentes.
+    </p>
+
+    <figure class="wide">
+      <a href="../assets/img/case-01/00-sintese-executiva.png" target="_blank" rel="noopener"><img src="../assets/img/case-01/00-sintese-executiva.png" alt="Página 00 — Síntese executiva: KPIs, índice por modalidade, ponte do +476 e tabela estratégica por curso" loading="lazy"></a>
+      <figcaption>00 · Síntese executiva — oito KPIs pareados (valor + variação), índice 2020 = 100 por modalidade, ponte "de onde veio o +476" e leitura estratégica por curso.</figcaption>
     </figure>
-    <figure>
-      <div class="placeholder-img">Screenshot 2 — análise regional (a adicionar)</div>
-      <figcaption>Share e concentração por região e área de conhecimento.</figcaption>
+    <figure class="wide">
+      <a href="../assets/img/case-01/01-mercado-e-modalidades.png" target="_blank" rel="noopener"><img src="../assets/img/case-01/01-mercado-e-modalidades.png" alt="Página 01 — Mercado e modalidades" loading="lazy"></a>
+      <figcaption>01 · Mercado e modalidades — índice 2020 = 100 por modalidade em Brasil, Paraná, Curitiba e PUCPR; cursos que impulsionaram o EAD; maiores altas e quedas no presencial.</figcaption>
+    </figure>
+    <figure class="wide">
+      <a href="../assets/img/case-01/02-posicao-competitiva-curitiba.png" target="_blank" rel="noopener"><img src="../assets/img/case-01/02-posicao-competitiva-curitiba.png" alt="Página 02 — Posição competitiva em Curitiba" loading="lazy"></a>
+      <figcaption>02 · Posição competitiva em Curitiba — share de matrículas e de ingressantes, ganhos e perdas por marca, concentração (HHI, Top-5).</figcaption>
+    </figure>
+    <figure class="wide">
+      <a href="../assets/img/case-01/03-mercado-ou-posicao.png" target="_blank" rel="noopener"><img src="../assets/img/case-01/03-mercado-ou-posicao.png" alt="Página 03 — Inteligência competitiva: mercado ou posição?" loading="lazy"></a>
+      <figcaption>03 · Mercado ou posição? — a ponte do +476, a mesma decomposição para UFPR e Positivo, share entre privadas × share total e as marcas com portfólio mais semelhante ao da PUCPR.</figcaption>
+    </figure>
+    <figure class="wide">
+      <a href="../assets/img/case-01/04-batalha-por-curso.png" target="_blank" rel="noopener"><img src="../assets/img/case-01/04-batalha-por-curso.png" alt="Página 04 — Batalha por curso" loading="lazy"></a>
+      <figcaption>04 · Batalha por curso — para o curso selecionado, quem ficou com a expansão do mercado e como a posição da PUCPR se moveu.</figcaption>
+    </figure>
+    <figure class="wide">
+      <a href="../assets/img/case-01/05-momentum-e-oportunidades.png" target="_blank" rel="noopener"><img src="../assets/img/case-01/05-momentum-e-oportunidades.png" alt="Página 05 — Momentum e oportunidades" loading="lazy"></a>
+      <figcaption>05 · Momentum e oportunidades — share de ingressantes menos share de matrículas por curso e por marca; radar de mercados prioritários para investigação.</figcaption>
+    </figure>
+    <figure class="wide">
+      <a href="../assets/img/case-01/06-portfolio-e-oportunidades.png" target="_blank" rel="noopener"><img src="../assets/img/case-01/06-portfolio-e-oportunidades.png" alt="Página 06 — Portfólio e oportunidades" loading="lazy"></a>
+      <figcaption>06 · Portfólio e oportunidades — Δ% do mercado × Δ share por curso, mercado do Paraná (tamanho × crescimento × presença da PUCPR), pressão de demanda e leitura estratégica por categoria.</figcaption>
+    </figure>
+    <figure class="wide">
+      <a href="../assets/img/case-01/07-competitividade-ead.png" target="_blank" rel="noopener"><img src="../assets/img/case-01/07-competitividade-ead.png" alt="Página 07 — Competitividade do EAD" loading="lazy"></a>
+      <figcaption>07 · Competitividade do EAD — decomposição do crescimento dos cinco cursos motores contra o Brasil EAD e os polos do Paraná.</figcaption>
+    </figure>
+    <figure class="wide">
+      <a href="../assets/img/case-01/08-financiamento.png" target="_blank" rel="noopener"><img src="../assets/img/case-01/08-financiamento.png" alt="Página 08 — Financiamento" loading="lazy"></a>
+      <figcaption>08 · Financiamento — ProUni, FIES e total financiado contra três benchmarks ex-PUCPR; lacuna genuína de 2021 exibida como lacuna, não como zero.</figcaption>
+    </figure>
+    <figure class="wide">
+      <a href="../assets/img/case-01/09-perfil-do-aluno.png" target="_blank" rel="noopener"><img src="../assets/img/case-01/09-perfil-do-aluno.png" alt="Página 09 — Perfil do aluno" loading="lazy"></a>
+      <figcaption>09 · Perfil do aluno — idade, turno, forma de ingresso e cor/raça (sempre com a taxa de não declaração ao lado).</figcaption>
+    </figure>
+    <figure class="wide">
+      <a href="../assets/img/case-01/10-qualidade-dos-dados-e-metodo.png" target="_blank" rel="noopener"><img src="../assets/img/case-01/10-qualidade-dos-dados-e-metodo.png" alt="Página 10 — Qualidade dos dados e método" loading="lazy"></a>
+      <figcaption>10 · Qualidade dos dados e método — cada problema de dado, seu tratamento e as reconciliações que fecham os totais.</figcaption>
     </figure>
 
     <!-- ===== 9. POWER BI ===== -->
     <h2>Relatório interativo (Power BI)</h2>
     <!--
       Quando tiver o link "Publish to web":
-      1. cole a URL no href do botão abaixo;
-      2. descomente o bloco .powerbi e cole a mesma URL no src do iframe.
-      Se não houver embed, apague o bloco .powerbi e mantenha só o botão (ou remova a seção).
+      1. cole a URL no href do botão abaixo (no lugar de #);
+      2. ative o bloco .powerbi (apague a linha de abertura e a de fechamento do comentário que o envolve) e cole a mesma URL no src do iframe;
+      3. apague o parágrafo "Versão interativa em publicação".
     -->
     <p class="links">
       <a class="btn" href="#" target="_blank" rel="noopener">Abrir relatório no Power BI</a>
     </p>
-    <p class="small muted">Embed ainda não publicado. O relatório será disponibilizado via Power BI Publish to Web (dados públicos).</p>
+    <p class="small muted">Versão interativa em publicação. Enquanto isso, as 11 páginas acima reproduzem o relatório completo.</p>
 
     <!--
     <div class="powerbi">
       <div class="frame">
-        <iframe title="Case 01 — Ensino Superior" src="https://app.powerbi.com/view?r=COLE_AQUI" allowfullscreen="true"></iframe>
+        <iframe title="PUCPR 2020–2024 — Power BI" src="https://app.powerbi.com/view?r=COLE_AQUI" allowfullscreen="true"></iframe>
       </div>
-      <p class="note">Relatório interativo. Em telas pequenas, recomenda-se abrir em tela cheia ou no desktop.</p>
+      <p class="note">Relatório interativo (dados públicos do INEP). Em telas pequenas, recomenda-se abrir em tela cheia ou no desktop.</p>
     </div>
     -->
 
     <!-- ===== 10. LIMITAÇÕES ===== -->
     <h2>Limitações</h2>
     <ul>
-      <!-- EDITAR -->
-      <li>Dados do Censo têm defasagem de cerca de um ano em relação à data de publicação.</li>
-      <li>Matrículas EAD são registradas na sede da IES, o que limita a leitura por polo/município.</li>
-      <li>Não há dados públicos de preço (mensalidade) por curso, o que impede análise de receita.</li>
+      <li><strong>O dado é agregado e declaratório.</strong> Não há registro individual, coortes, transferências ou evasão: uma queda de matrículas pode ser formatura, encerramento de oferta ou mudança de reporte, e o Censo não distingue. Nenhuma afirmação causal é possível.</li>
+      <li><strong>Não há preço, receita, margem ou custo.</strong> "Mercado atrativo" é leitura de crescimento e demanda, nunca de viabilidade. O radar de oportunidades é triagem, não recomendação de abertura.</li>
+      <li><strong>Quebras de série tratadas, não resolvidas</strong>: inscritos da PUCPR iguais às vagas desde 2022 (indicador não usado como demanda); FIES de 2021 com pico isolado (exibido como lacuna); origem escolar inconsistente (descartada); oscilação da base EAD em 2023 sem causa determinável.</li>
+      <li><strong>EAD sem geografia para vagas e inscritos</strong> — os indicadores de demanda são presenciais.</li>
+      <li><strong>Momentum e similaridade são sinais</strong>, não previsões; a decomposição do crescimento é uma identidade contábil, não uma atribuição de causa.</li>
+      <li>Defasagem de cerca de um ano entre o ano de referência e a publicação do Censo.</li>
     </ul>
 
     <!-- ===== 11. CONCLUSÃO / RECOMENDAÇÃO ===== -->
     <h2>Conclusão e recomendação</h2>
     <p>
-      <!-- EDITAR -->
-      A definir após conclusão da análise. Estrutura prevista: síntese em 3 frases, seguida de
-      2–3 recomendações priorizadas com o racional e o risco de cada uma.
+      A PUCPR termina 2024 maior do que começou 2020 por dois caminhos: um EAD que mais que dobrou ganhando
+      posição em seus cursos motores, e um presencial que recuou no conjunto dos campi enquanto crescia em
+      Curitiba — por exposição a mercados que cresceram e por cursos novos, apesar de perda de posição
+      relativa no agregado dos cursos em que já competia. O Censo não explica sozinho por que uma instituição
+      ganha ou perde posição, mas mostra com precisão onde as perguntas estratégicas devem ser feitas.
     </p>
+    <p>A agenda que emerge é localizada:</p>
+    <ul>
+      <li><strong>Defender / recuperar</strong> — Psicologia (maior vazamento de posição, −448, num mercado +60%) e Odontologia (−155, com a Positivo à frente da expansão). Medicina: monitorar, sob oferta regulada.</li>
+      <li><strong>Crescer</strong> — sustentar Ciência da computação e Design e entender o mecanismo antes de exigi-lo de outros cursos; em Engenharia de software, acompanhar um mercado que cresceu quase 800% em quatro anos.</li>
+      <li><strong>Investigar</strong> — Biomedicina como business case (preço, margem, capacidade, regulação, demanda proprietária), não como conclusão.</li>
+      <li><strong>Monitorar</strong> — a Positivo como benchmark de portfólio e a concentração dos motores do EAD, curso a curso.</li>
+      <li><strong>Estruturar</strong> — separar sempre a discussão institucional (−390) da discussão de Curitiba (+476), e construir a camada de inteligência proprietária que o Censo não contém: motivos de escolha, coortes de permanência e conversão, monitoramento estruturado da concorrência local.</li>
+    </ul>
 
     <nav class="case-nav">
       <a href="../projetos.html">← Todos os projetos</a>
