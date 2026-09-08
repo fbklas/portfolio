@@ -54,7 +54,8 @@
     <p>
       O relatório analítico em PDF é o documento executivo que acompanha o dashboard: 12 seções, 12 figuras
       e 5 tabelas, escrito na sequência fato → evidência → interpretação → implicação → cautela, com todas
-      as reconciliações numéricas no capítulo de método. Todos os números foram conferidos contra o modelo DAX.
+      as reconciliações numéricas no capítulo de método. Os números-chave e as
+      reconciliações foram validados contra o modelo DAX.
     </p>
 
     <!-- ===== 1. PROBLEMA DE NEGÓCIO ===== -->
@@ -82,7 +83,8 @@
       posição num mercado que não cresce.
     </p>
     <p>
-      O Censo da Educação Superior é a única base que compara todas as instituições do país na mesma régua.
+      O Censo da Educação Superior oferece uma base padronizada para comparar instituições de todo o país
+      na mesma régua.
       É declaratória e agregada por curso, instituição e município — o que define tanto seu valor
       (comparabilidade universal) quanto seus limites (não há preço, receita, coortes ou trajetórias de alunos).
     </p>
@@ -103,7 +105,7 @@
     <h2>Ferramentas utilizadas</h2>
     <ul>
       <li><strong>Python (pandas, DuckDB)</strong> — leitura e padronização dos microdados brutos (164 colunas por ano), auditoria de consistência, análise exploratória e geração das tabelas analíticas importadas pelo BI.</li>
-      <li><strong>Power BI</strong> — modelo tabular em esquema estrela com ~180 medidas DAX; relatório autorado em formato PBIP/PBIR (JSON versionável), com validação estrutural por CLI e conferência de 32 âncoras numéricas contra o motor DAX.</li>
+      <li><strong>Power BI</strong> — modelo tabular em esquema estrela com 177 medidas DAX; relatório autorado em formato PBIP/PBIR (JSON versionável), com validação estrutural por CLI e conferência de 32 âncoras numéricas contra o motor DAX.</li>
       <li><strong>Excel</strong> — validação cruzada de totais contra as sinopses estatísticas oficiais.</li>
     </ul>
 
@@ -113,7 +115,7 @@
       <li><strong>Definição das perguntas e das réguas de leitura.</strong> Brasil, Paraná e Curitiba como referências; presencial e EAD sempre separados; Curitiba definida pelo município do curso, não pela sede da instituição.</li>
       <li><strong>Harmonização.</strong> Rótulos de curso que mudam entre anos foram fundidos num rótulo único (sem isso, Engenharia de computação apareceria como um curso em alta e outro em queda). Instituições consolidadas por marca.</li>
       <li><strong>Cortes de materialidade</strong> para evitar variações extremas sobre bases pequenas: marcas com ≥1.500 matrículas, cursos com mercado ≥400 e PUCPR ≥100, pressão de demanda em cursos com ≥800 matrículas no estado. Os cortes definem o universo; o que é exibido é um subconjunto, e reduzir o exibido não altera nenhum cálculo.</li>
-      <li><strong>Tratamento explícito dos problemas de dado</strong> (série de inscritos quebrada em 2022, pico isolado de FIES em 2021, mecanismos de financiamento sobrepostos, alta não declaração de cor/raça) — cada um documentado numa página própria do relatório.</li>
+      <li><strong>Tratamento dos problemas de dado</strong> (série de inscritos quebrada em 2022, pico isolado de FIES em 2021, mecanismos de financiamento sobrepostos, alta não declaração de cor/raça) — cada um documentado explicitamente no dashboard e/ou no relatório, com o tratamento adotado.</li>
       <li><strong>Decomposição do crescimento</strong> como identidade contábil: Δ matrículas = efeito mercado (exposição a cursos que cresceram) + expansão do portfólio (cursos novos) + efeito posição (variação de share dentro dos cursos existentes).</li>
       <li><strong>Sinais antecedentes</strong>: momentum (share de ingressantes − share de matrículas) e similaridade de portfólio entre marcas (cosseno), tratados como indicação, nunca como previsão.</li>
       <li><strong>Regra editorial</strong>: todo percentual acompanhado do denominador; nenhuma linguagem causal ("migração", "roubou alunos", "evasão") — o Censo não a sustenta.</li>
@@ -208,7 +210,7 @@
     </ul>
 
     <!-- ===== 11. CONCLUSÃO / RECOMENDAÇÃO ===== -->
-    <h2>Conclusão e recomendação</h2>
+    <h2>Conclusão e agenda estratégica</h2>
     <p>
       A PUCPR termina 2024 maior do que começou 2020 por dois caminhos: um EAD que mais que dobrou ganhando
       posição em seus cursos motores, e um presencial que recuou no conjunto dos campi enquanto crescia em
