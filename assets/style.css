@@ -187,13 +187,6 @@ figure img {
 }
 figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; }
 
-/* figura mais larga que a coluna de texto (screenshots de dashboard) */
-.wide {
-  width: min(1100px, calc(100vw - 48px));
-  margin-left: 50%;
-  transform: translateX(-50%);
-}
-.wide figcaption, .wide .note { max-width: var(--max); margin-left: auto; margin-right: auto; }
 figure a { display: block; }
 
 /* placeholder enquanto não há imagem */
@@ -213,10 +206,11 @@ figure a { display: block; }
 .powerbi .frame {
   position: relative;
   width: 100%;
-  /* 16:9 + barra inferior do Power BI */
-  padding-top: 62.5%;
+  /* canvas 16:9 (56,25%) + 56 px da barra inferior do Power BI.
+     Precisa ser exato: qualquer folga vira tarja cinza do visualizador. */
+  padding-top: calc(56.25% + 56px);
   border: 1px solid var(--line);
-  background: var(--bg-soft);
+  background: var(--bg);
 }
 .powerbi iframe {
   position: absolute;
@@ -263,6 +257,34 @@ th { font-weight: 600; color: var(--muted); font-size: 14px; }
   .case-meta { grid-template-columns: 1fr; gap: 2px 0; }
   .case-meta dt { margin-top: 10px; }
   .case-meta dt:first-child { margin-top: 0; }
+}
+
+/* ---------- Blocos largos (dashboard e screenshots) ----------
+   Sangram para fora da coluna de texto sem usar 100vw (que inclui a barra de
+   rolagem e provoca deslocamento quando ela aparece). Precisa vir DEPOIS de
+   .powerbi para sobrescrever a margem daquele bloco. */
+
+.wide {
+  --bleed: 170px;
+  width: calc(100% + 2 * var(--bleed));
+  margin-left: calc(-1 * var(--bleed));
+  margin-right: calc(-1 * var(--bleed));
+  max-width: none;
+}
+
+.wide figcaption,
+.wide .note {
+  max-width: calc(var(--max) - 48px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* sem espaço para sangrar: volta à largura da coluna */
+@media (max-width: 1120px) {
+  .wide {
+    --bleed: 0px;
+    width: 100%;
+  }
 }
 
 /* ---------- Impressão (recrutador pode salvar em PDF) ---------- */
