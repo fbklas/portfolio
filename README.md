@@ -17,6 +17,7 @@ site/
 │   └── _template.html                  Modelo para novos cases (não é linkado no site)
 ├── assets/
 │   ├── style.css                       Único arquivo de estilo
+│   ├── docs/                           PDFs para download (relatórios analíticos)
 │   └── img/
 │       ├── case-01/                    Screenshots do case 01
 │       └── case-02/                    Screenshots do case 02
