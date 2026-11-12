@@ -150,10 +150,12 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 48px 0; }
 
 .project-list .meta { font-size: 14px; color: var(--muted); }
 
-/* thumbnail do projeto (home e lista de projetos) */
+/* thumbnail do projeto (home e lista de projetos): pequena, à esquerda do texto */
+.project-list li { display: flex; gap: 20px; align-items: flex-start; }
 .project-list .thumb {
+  flex: 0 0 200px;
   display: block;
-  margin: 0 0 16px;
+  margin: 4px 0 0;
   border: 1px solid var(--line);
   border-radius: 4px;
   overflow: hidden;
@@ -167,6 +169,11 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 48px 0; }
   object-fit: cover;
 }
 .project-list .thumb:hover img { opacity: 0.92; }
+.project-list .body { flex: 1 1 auto; min-width: 0; }
+@media (max-width: 560px) {
+  .project-list li { flex-direction: column; gap: 12px; }
+  .project-list .thumb { flex-basis: auto; width: 100%; max-width: 280px; }
+}
 
 
 /* ---------- Página de case ---------- */
