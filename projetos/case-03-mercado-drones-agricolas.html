@@ -31,10 +31,9 @@
 
     <dl class="case-meta">
       <dt>Área</dt><dd>Market Intelligence · Dimensionamento de mercado · Business Analysis</dd>
-      <dt>Ferramentas</dt><dd>Power BI (modelo tabular, 67 medidas DAX, projeto PBIP/TMDL/PBIR gerado por código), Python, Excel (Power Query)</dd>
+      <dt>Ferramentas</dt><dd>Power BI (modelo tabular, 67 medidas DAX), Python, Excel (Power Query)</dd>
       <dt>Fontes</dt><dd>Comex Stat/MDIC (microdados de comércio exterior), ANAC (cadastro de aeronaves não tripuladas), IBGE (Produção Agrícola Municipal), CONAB, fichas técnicas de fabricantes, preços em revendas e compras públicas (PNCP), Embrapa e literatura agronômica</dd>
-      <dt>Entregáveis</dt><dd>Painel Power BI com 9 páginas · modelo analítico em Excel · guia metodológico · pipeline reproduzível em Python com 415 verificações automáticas</dd>
-      <dt>Período</dt><dd>Setembro–novembro de 2026</dd>
+      <dt>Entregáveis</dt><dd>Painel Power BI com 9 páginas · modelo analítico em Excel · guia metodológico · pipeline de dados reproduzível em Python</dd>
     </dl>
 
     <!-- ===== RELATÓRIO INTERATIVO (Power BI) ===== -->
@@ -107,8 +106,8 @@
     <!-- ===== 4. FERRAMENTAS ===== -->
     <h2>Ferramentas utilizadas</h2>
     <ul>
-      <li><strong>Python</strong> — ingestão dos microdados do Comex com conferência contra os totais oficiais e hash de cada arquivo bruto; construção das 14 tabelas do modelo; 415 verificações automáticas antes de cada publicação (integridade dos dados, referências DAX, geometria das páginas e os fatos afirmados em cada título).</li>
-      <li><strong>Power BI</strong> — modelo tabular em esquema estrela com 67 medidas DAX; o projeto inteiro (TMDL do modelo e PBIR do relatório) é <em>gerado por script</em>, e cada visual reproduz a forma de um visual já gravado pelo Power BI Desktop em outro projeto, conferida automaticamente contra um vocabulário de 209 exemplares. Nenhuma página foi desenhada à mão.</li>
+      <li><strong>Python</strong> — ingestão dos microdados do Comex com conferência contra os totais oficiais e hash de cada arquivo bruto; construção das 14 tabelas do modelo; testes de integridade dos dados e conferência, contra as tabelas carregadas, do fato afirmado no título de cada gráfico.</li>
+      <li><strong>Power BI</strong> — modelo tabular em esquema estrela com 67 medidas DAX, organizadas em cinco grupos (importações, frota registrada, base agrícola, preços e cenários); relatório de nove páginas.</li>
       <li><strong>Excel (Power Query)</strong> — modelo analítico paralelo, conectado às mesmas bases, em que cada premissa é uma célula visível e o resultado fica "pendente" enquanto ela não for preenchida.</li>
     </ul>
 
@@ -121,7 +120,7 @@
       <li><strong>Contraprova por fonte independente.</strong> A série de importações é confrontada, ano a ano, com os drones agrícolas registrados na ANAC.</li>
       <li><strong>Dois métodos de dimensionamento que não se alimentam um do outro.</strong> Pelo lado da oferta: importações menos baixas por vida útil, mais as parcelas de classificação incerta. Pelo lado da demanda: área × aplicações por cultura × aptidão para drone ÷ hectares tratados por máquina por ano.</li>
       <li><strong>Premissa é faixa, não ponto.</strong> Cada input sem dado observado entra com piso, teto e a evidência que os sustenta; três cenários mostram quanto cada um move o resultado.</li>
-      <li><strong>O título de cada gráfico é uma afirmação testada.</strong> Antes de publicar, o pipeline recalcula o fato que cada título afirma a partir dos dados carregados; se a afirmação deixar de ser verdadeira, o build falha.</li>
+      <li><strong>O título de cada gráfico é uma afirmação testada.</strong> Antes de publicar, o fato que cada título afirma é recalculado a partir dos dados carregados; título que deixa de ser verdadeiro é reescrito.</li>
     </ol>
 
     <!-- ===== 6. PRINCIPAIS ANÁLISES ===== -->

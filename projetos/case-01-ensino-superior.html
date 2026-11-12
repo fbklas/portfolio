@@ -31,10 +31,10 @@
 
     <dl class="case-meta">
       <dt>Área</dt><dd>Market Intelligence · Análise competitiva · Estratégia de portfólio</dd>
-      <dt>Ferramentas</dt><dd>Power BI (modelo tabular, DAX, PBIP/PBIR), Python (pandas, DuckDB), Excel</dd>
+      <dt>Ferramentas</dt><dd>Power BI (modelo tabular, DAX), Python (pandas, DuckDB), Excel</dd>
       <dt>Fontes</dt><dd>Microdados públicos do Censo da Educação Superior — INEP, edições 2020 a 2024</dd>
       <dt>Entregáveis</dt><dd>Dashboard Power BI com 11 páginas narrativas · <a href="../assets/docs/PUCPR_2020-2024_Analise_de_Mercado_Competicao_e_Portfolio.pdf" target="_blank" rel="noopener">relatório analítico executivo (PDF)</a> · guia de manutenção do modelo</dd>
-      <dt>Período</dt><dd>Agosto–setembro de 2026 · projeto independente</dd>
+      <dt>Tipo</dt><dd>Projeto independente</dd>
     </dl>
 
     <!-- ===== RELATÓRIO INTERATIVO (Power BI) + PDF ===== -->
@@ -105,7 +105,7 @@
     <h2>Ferramentas utilizadas</h2>
     <ul>
       <li><strong>Python (pandas, DuckDB)</strong> — leitura e padronização dos microdados brutos (164 colunas por ano), auditoria de consistência, análise exploratória e geração das tabelas analíticas importadas pelo BI.</li>
-      <li><strong>Power BI</strong> — modelo tabular em esquema estrela com 177 medidas DAX; relatório autorado em formato PBIP/PBIR (JSON versionável), com validação estrutural por CLI e conferência de 32 âncoras numéricas contra o motor DAX.</li>
+      <li><strong>Power BI</strong> — modelo tabular em esquema estrela com 177 medidas DAX; relatório de 11 páginas, com 32 valores de referência calculados fora do Power BI e conferidos contra os resultados das medidas.</li>
       <li><strong>Excel</strong> — validação cruzada de totais contra as sinopses estatísticas oficiais.</li>
     </ul>
 

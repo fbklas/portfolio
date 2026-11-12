@@ -31,10 +31,10 @@
 
     <dl class="case-meta">
       <dt>Área</dt><dd>Business Analysis · Inteligência regulatória · Pré-diagnóstico comercial</dd>
-      <dt>Ferramentas</dt><dd>Power BI (modelo tabular, 280 medidas DAX, projeto PBIP/TMDL/PBIR gerado por código), Python (pandas, DuckDB, pyarrow), Excel</dd>
+      <dt>Ferramentas</dt><dd>Power BI (modelo tabular, 280 medidas DAX), Python (pandas, DuckDB, pyarrow), Excel</dd>
       <dt>Fontes</dt><dd>21 bases de dados abertos da ANS (beneficiários, reclamações NIP, IGR, IDSS, monitoramento, demonstrações contábeis, rede credenciada, TISS) e o CNES do Ministério da Saúde — as principais integradas no painel, as demais usadas na validação</dd>
-      <dt>Entregáveis</dt><dd>Painel Power BI com 9 páginas narrativas · pipeline reproduzível em Python · guia de leitura para leigos · relatório metodológico de validação (gates V1–V14)</dd>
-      <dt>Período</dt><dd>Setembro–novembro de 2026 · projeto independente</dd>
+      <dt>Entregáveis</dt><dd>Painel Power BI com 9 páginas narrativas · pipeline de dados reproduzível em Python · guia de leitura para leigos · relatório metodológico de validação (gates V1–V14)</dd>
+      <dt>Tipo</dt><dd>Projeto independente</dd>
     </dl>
 
     <!-- ===== RELATÓRIO INTERATIVO (Power BI) ===== -->
@@ -110,7 +110,7 @@
     <h2>Ferramentas utilizadas</h2>
     <ul>
       <li><strong>Python (pandas, DuckDB, pyarrow)</strong> — download e inventário das 21 bases (≈6,6 GB), padronização da chave (registro ANS), construção das 36 tabelas do modelo em esquema estrela, 17 testes de reconciliação com valores esperados, e toda a validação posterior (casamento rede × CNES, backtests, TISS).</li>
-      <li><strong>Power BI</strong> — modelo tabular com 280 medidas DAX; o projeto inteiro (TMDL do modelo e PBIR do relatório) é <em>gerado por script</em>, versionado, com snapshot e hash antes de cada escrita e conferência de âncoras numéricas contra o motor DAX. Nenhuma página foi desenhada à mão.</li>
+      <li><strong>Power BI</strong> — modelo tabular com 280 medidas DAX sobre as 36 tabelas; valores de referência calculados fora do Power BI são conferidos contra os resultados das medidas.</li>
       <li><strong>Excel</strong> — conferência manual de totais e das taxas oficiais (IGR) contra a publicação da ANS.</li>
     </ul>
 
@@ -123,7 +123,7 @@
       <li><strong>Percentil, não nota.</strong> Cada indicador informa o sentido ("maior é pior" ou "maior é melhor"); não há score, ranking geral nem "melhor operadora". Dois indicadores apontando em direções opostas são informação, não inconsistência.</li>
       <li><strong>Presença de rede como três conceitos separados</strong>: existência (CNES), contratação (rede declarada à ANS) e, só onde observável, utilização (TISS). O painel mostra "oferta aparente"; a palavra "suficiência" não aparece nele.</li>
       <li><strong>Gates de validação antes de cada camada.</strong> Catorze testes formais (V1–V14) com critérios fixados antes de olhar o resultado — casamento rede × CNES (≥ 60 %), estabilidade das taxas (CV &lt; 30 %), backtest contra o gabarito interno (sensibilidade ≥ 4/6) — e a regra de que uma camada só entra no painel se passar.</li>
-      <li><strong>Linguagem controlada.</strong> Cada página termina com uma frase automática ("acima / abaixo / em linha com os pares"), nunca causal; o rodapé de cada página é a regra de leitura; a página 00 mostra sete exemplos de leitura certa e errada.</li>
+      <li><strong>Linguagem controlada.</strong> Cada página termina com uma frase dinâmica ("acima / abaixo / em linha com os pares"), nunca causal; o rodapé de cada página é a regra de leitura; a página 00 mostra sete exemplos de leitura certa e errada.</li>
     </ol>
 
     <!-- ===== 6. PRINCIPAIS ANÁLISES ===== -->
