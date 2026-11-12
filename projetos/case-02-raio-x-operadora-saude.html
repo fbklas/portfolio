@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Case 02 — Raio-X público de uma operadora de plano de saúde — Francisco Biral Klas</title>
+  <meta name="description" content="O que os dados abertos da ANS e do CNES permitem dizer sobre uma operadora de plano de saúde — e o que não permitem. Painel Power BI de nove páginas com carteira, reclamações, regulação, benchmark entre pares e presença territorial de rede.">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="container">
+    <a class="brand" href="../index.html">Francisco Biral Klas</a>
+    <nav>
+      <a href="../index.html">Início</a>
+      <a href="../projetos.html" aria-current="page">Projetos</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <!-- ===== CABEÇALHO DO CASE ===== -->
+    <div class="case-header">
+      <span class="tag muted small">CASE 02 · BUSINESS ANALYSIS — SAÚDE SUPLEMENTAR</span>
+      <h1>Raio-X público de uma operadora de plano de saúde</h1>
+      <p class="subtitle">O que os dados abertos da ANS e do CNES permitem dizer sobre uma operadora — carteira, reclamações, regulação, posição entre pares e rede no território — e, com a mesma precisão, o que eles não permitem dizer.</p>
+    </div>
+
+    <dl class="case-meta">
+      <dt>Área</dt><dd>Business Analysis · Inteligência regulatória · Pré-diagnóstico comercial</dd>
+      <dt>Ferramentas</dt><dd>Power BI (modelo tabular, 280 medidas DAX, projeto PBIP/TMDL/PBIR gerado por código), Python (pandas, DuckDB, pyarrow), Excel</dd>
+      <dt>Fontes</dt><dd>21 bases de dados abertos da ANS (beneficiários, reclamações NIP, IGR, IDSS, monitoramento, demonstrações contábeis, rede credenciada, TISS) e o CNES do Ministério da Saúde — as principais integradas no painel, as demais usadas na validação</dd>
+      <dt>Entregáveis</dt><dd>Painel Power BI com 9 páginas narrativas · pipeline reproduzível em Python · guia de leitura para leigos · relatório metodológico de validação (gates V1–V14)</dd>
+      <dt>Período</dt><dd>Setembro–novembro de 2026 · projeto independente</dd>
+    </dl>
+
+    <!-- ===== RELATÓRIO INTERATIVO (Power BI) ===== -->
+    <h2>Relatório interativo</h2>
+    <!--
+      PARA ATIVAR O EMBED: no Power BI Service, Arquivo → Inserir relatório → Publicar na Web (público) → Criar código.
+      1. cole o link (https://app.powerbi.com/view?r=...) no href do botão abaixo;
+      2. remova os marcadores de comentário do bloco <div class="powerbi"> e cole o mesmo link no src do iframe;
+      3. apague o parágrafo "em publicação".
+    -->
+    <p class="muted"><span class="status">Relatório interativo em publicação</span> — a versão pública usa dados pseudonimizados e perturbados (ver nota ao fim desta seção).</p>
+    <!--
+    <p class="links">
+      <a class="btn" href="https://app.powerbi.com/view?r=COLE_AQUI" target="_blank" rel="noopener">Abrir relatório no Power BI (tela cheia)</a>
+    </p>
+    <div class="powerbi wide">
+      <div class="frame">
+        <iframe title="Raio-X público da operadora — Power BI" src="https://app.powerbi.com/view?r=COLE_AQUI" allowfullscreen="true"></iframe>
+      </div>
+      <p class="note">Relatório interativo; navegue pelas páginas com as setas no rodapé. Em telas pequenas, recomenda-se abrir em tela cheia ou no desktop.</p>
+    </div>
+    -->
+    <p class="small muted">
+      <strong>Sobre os dados publicados.</strong> O painel foi construído sobre dados públicos de uma operadora real
+      (cooperativa médica com clientes no Paraná). Na versão publicada, a operadora e seus pares aparecem com
+      pseudônimos, o município-sede e os prestadores estão mascarados, e todos os volumes foram perturbados
+      em até ±10 % de forma coerente entre as tabelas. Os números, portanto, são <em>derivados</em> e não devem ser
+      citados como oficiais; a estrutura, as regras de leitura e a posição relativa entre pares são as do estudo original.
+      O objeto do case é o método, não a operadora.
+    </p>
+
+    <!-- ===== 1. PROBLEMA DE NEGÓCIO ===== -->
+    <h2>Problema de negócio</h2>
+    <p>
+      Uma consultoria de rede assistencial precisa decidir, antes da primeira reunião com uma operadora de plano
+      de saúde, <strong>onde essa operadora está exposta</strong> — em carteira, em reclamações, em classificação
+      regulatória, em rede — e se vale a pena propor um diagnóstico. A pergunta que orientou o projeto foi:
+      <strong>quanto desse pré-diagnóstico pode ser feito só com dados públicos, com que precisão, e onde exatamente
+      o dado público para de responder?</strong>
+    </p>
+    <p>
+      O caso nasceu de um relatório interno de dimensionamento de rede (agenda, cliente oculto, parâmetros
+      assistenciais), que serviu como gabarito: se o painel público não reproduzisse os problemas que o estudo
+      interno encontrou, essa seria uma conclusão tão útil quanto o contrário — e foi o que aconteceu.
+    </p>
+
+    <!-- ===== 2. CONTEXTO ===== -->
+    <h2>Contexto</h2>
+    <p>
+      A ANS publica, em dados abertos, praticamente tudo o que regula: beneficiários por operadora, município,
+      idade e tipo de plano (mensal); cada reclamação formal com assunto e classificação; o índice de reclamações
+      (IGR); o índice de desempenho (IDSS); a faixa de monitoramento da garantia de atendimento; as demonstrações
+      contábeis; a rede credenciada declarada por cada operadora; e, desde 2019, os eventos assistenciais do
+      padrão TISS por UF. O Ministério da Saúde publica o CNES, com cada estabelecimento e cada profissional
+      de saúde do país, carga horária e vínculos.
+    </p>
+    <p>
+      O que não existe em lugar nenhum público é a agenda: quantas horas cada médico dedica a cada plano,
+      quanto tempo um beneficiário espera por uma consulta, se o prestador cadastrado aceita novos pacientes.
+      O projeto é, em boa medida, o mapa dessa fronteira.
+    </p>
+
+    <!-- ===== 3. FONTES DE DADOS ===== -->
+    <h2>Fontes de dados</h2>
+    <table>
+      <thead><tr><th>Fonte</th><th>Conteúdo</th><th>Uso no projeto</th></tr></thead>
+      <tbody>
+        <tr><td>ANS — Informações consolidadas de beneficiários (ICB) e SIB</td><td>Beneficiários por operadora × município × sexo × faixa etária × plano, mensal (≈1 milhão de linhas/mês para o Paraná)</td><td>Carteira, perfil, denominador de todas as taxas</td></tr>
+        <tr><td>ANS — Cadastro de operadoras (CADOP)</td><td>Razão social, modalidade, sede, registro</td><td>Dimensão de operadora, universo e pares</td></tr>
+        <tr><td>ANS — Demandas dos consumidores (NIP)</td><td>Cada reclamação formal: data, assunto, classificação, município do beneficiário</td><td>Volume, taxa por 10 mil, composição por tema, tendência</td></tr>
+        <tr><td>ANS — IGR, IDSS, Monitoramento da garantia de atendimento</td><td>Índices oficiais e faixa de classificação trimestral</td><td>Regulação, reconciliada mês a mês com o cálculo oficial</td></tr>
+        <tr><td>ANS — Demonstrações contábeis (DIOPS)</td><td>Contas trimestrais</td><td>Contexto financeiro (sem interpretação de resultado)</td></tr>
+        <tr><td>ANS — Prestadores não hospitalares e hospitalares (RPS)</td><td>Rede declarada por operadora: profissionais, clínicas, hospitais, tipo de contrato</td><td>Presença de rede por município (direta / indireta / ausente)</td></tr>
+        <tr><td>Ministério da Saúde — CNES</td><td>Estabelecimentos, profissionais, CBO, carga horária, vínculo, convênios atendidos, leitos, serviços</td><td>Casamento com a rede declarada; testes de capacidade aparente</td></tr>
+        <tr><td>ANS — TISS (eventos ambulatoriais e hospitalares, Paraná 2025)</td><td>48,5 milhões de eventos: município do beneficiário, município do prestador, tipo de atendimento, CBO</td><td>Fluxo origem → destino; teste de utilização por especialidade</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">Nenhum dado confidencial. Todo o projeto usa exclusivamente dados públicos; a operadora não participou nem encomendou o trabalho. A versão publicada é pseudonimizada e perturbada.</p>
+
+    <!-- ===== 4. FERRAMENTAS ===== -->
+    <h2>Ferramentas utilizadas</h2>
+    <ul>
+      <li><strong>Python (pandas, DuckDB, pyarrow)</strong> — download e inventário das 21 bases (≈6,6 GB), padronização da chave (registro ANS), construção das 36 tabelas do modelo em esquema estrela, 17 testes de reconciliação com valores esperados, e toda a validação posterior (casamento rede × CNES, backtests, TISS).</li>
+      <li><strong>Power BI</strong> — modelo tabular com 280 medidas DAX; o projeto inteiro (TMDL do modelo e PBIR do relatório) é <em>gerado por script</em>, versionado, com snapshot e hash antes de cada escrita e conferência de âncoras numéricas contra o motor DAX. Nenhuma página foi desenhada à mão.</li>
+      <li><strong>Excel</strong> — conferência manual de totais e das taxas oficiais (IGR) contra a publicação da ANS.</li>
+    </ul>
+
+    <!-- ===== 5. METODOLOGIA ===== -->
+    <h2>Metodologia</h2>
+    <ol>
+      <li><strong>Universo e comparabilidade explícitos.</strong> Operadoras médico-hospitalares com ≥ 1.000 beneficiários no Paraná (83); comparação só com ≥ 5.000 vidas e ≥ 10 reclamações na janela; três grupos de pares (modalidade × porte; mesmo sistema cooperativo; lista customizada). Operadoras fora do corte aparecem em cinza, com "baixa precisão", e nunca recebem percentil.</li>
+      <li><strong>Denominador antes de numerador.</strong> Toda taxa divide por beneficiários do mesmo mês e da mesma geografia; a janela de 12 meses é derivada dos dados (últimos meses em que reclamações e carteira coexistem), e cada fonte carrega o carimbo de "até quando enxerga".</li>
+      <li><strong>Reconciliação com o oficial.</strong> O IGR recalculado bate com o publicado pela ANS em 31 de 32 meses; a diferença restante está documentada. Soma ÷ soma, nunca soma ÷ média.</li>
+      <li><strong>Percentil, não nota.</strong> Cada indicador informa o sentido ("maior é pior" ou "maior é melhor"); não há score, ranking geral nem "melhor operadora". Dois indicadores apontando em direções opostas são informação, não inconsistência.</li>
+      <li><strong>Presença de rede como três conceitos separados</strong>: existência (CNES), contratação (rede declarada à ANS) e, só onde observável, utilização (TISS). O painel mostra "oferta aparente"; a palavra "suficiência" não aparece nele.</li>
+      <li><strong>Gates de validação antes de cada camada.</strong> Catorze testes formais (V1–V14) com critérios fixados antes de olhar o resultado — casamento rede × CNES (≥ 60 %), estabilidade das taxas (CV &lt; 30 %), backtest contra o gabarito interno (sensibilidade ≥ 4/6) — e a regra de que uma camada só entra no painel se passar.</li>
+      <li><strong>Linguagem controlada.</strong> Cada página termina com uma frase automática ("acima / abaixo / em linha com os pares"), nunca causal; o rodapé de cada página é a regra de leitura; a página 00 mostra sete exemplos de leitura certa e errada.</li>
+    </ol>
+
+    <!-- ===== 6. PRINCIPAIS ANÁLISES ===== -->
+    <h2>Principais análises (as nove páginas)</h2>
+    <ul>
+      <li><strong>00 · Como ler</strong> — os erros de interpretação que o painel foi desenhado para evitar.</li>
+      <li><strong>01 · Síntese</strong> — quatro barras de posição relativa (carteira, reclamações, regulação, pares) e a frase que cada uma autoriza.</li>
+      <li><strong>02 · Carteira</strong> — quem a rede precisa atender: os 10 maiores municípios com curva acumulada, pirâmide etária e tipo de contratação contra os pares.</li>
+      <li><strong>03 · Reclamações e acesso</strong> — volume, taxa por 10 mil, composição por tema (cobertura, rede/prazo, contrato), tendência do IGR móvel e tabela por município com precisão explícita.</li>
+      <li><strong>04 · Oferta de rede</strong> — para cada município da carteira, a rede cadastrada: profissionais, clínicas e hospitais, classificados como presença direta, apenas indireta (intercâmbio) ou sem prestador identificado.</li>
+      <li><strong>06 · Regulação</strong> — IDSS por dimensão, faixa de monitoramento e a régua de tempo de cada fonte.</li>
+      <li><strong>07 · Benchmark</strong> — 11 indicadores com P25, mediana, P75, percentil e precisão, para o grupo de pares escolhido.</li>
+      <li><strong>08 · Método</strong> — a escada de evidência de cinco degraus: do que o dado público prova ao que só agenda e cliente oculto provam.</li>
+      <li><strong>09 · Fontes</strong> — cada indicador com fórmula em palavras, base de origem e corte de materialidade.</li>
+    </ul>
+
+    <!-- ===== 7. PRINCIPAIS INSIGHTS ===== -->
+    <h2>Principais insights</h2>
+    <ul>
+      <li><strong>Uma carteira concentrada e envelhecida pede mais da rede do que o número de clientes sugere.</strong> Na operadora âncora, cerca de dois terços dos beneficiários moram no município-sede (pares: um terço), a proporção de idosos é quase o dobro da dos pares e quase metade da carteira está em planos individuais (pares: menos de 10 %). Nada disso é problema em si; tudo isso define a exigência sobre a rede.</li>
+      <li><strong>Poucas reclamações não significam ausência de problema — e a tendência diz mais que o nível.</strong> A taxa de reclamações por 10 mil beneficiários fica abaixo da maioria dos pares (percentil ≈ 30) e o IGR em cerca de metade da mediana, mas sobe quase 50 % em um ano, acompanhando o setor. As reclamações falam mais de cobertura e menos de rede/prazo que as dos pares.</li>
+      <li><strong>A rede declarada está onde a carteira está.</strong> O município-sede concentra a quase totalidade dos profissionais e hospitais diretos; cerca de um oitavo da carteira mora em municípios sem prestador direto, quase toda em cidades pequenas vizinhas, atendida por intercâmbio. Esses são os territórios a investigar — não a concluir.</li>
+      <li><strong>O achado central: contar médicos cadastrados não reproduz os problemas reais de acesso.</strong> Nas especialidades em que o estudo interno (agenda e cliente oculto) encontrou dificuldade, o cadastro público mostra a operadora <em>acima</em> da mediana dos pares. O backtest contra o gabarito deu sensibilidade 0 em 6 — e por isso a página "pressão por especialidade" foi deliberadamente não construída.</li>
+      <li><strong>As alternativas que pareciam capazes de resolver isso falharam da mesma forma, por motivos diferentes.</strong> Horas de carga horária do CNES somam todos os pagadores e um terço dos médicos declara mais de 60 h semanais; o filtro "estabelecimento atende plano" e o cruzamento com a rede declarada esvaziam o grupo de comparação e empurram a operadora para cima; no TISS, 70 % das consultas dos residentes do município-sede estão codificadas como clínica geral, de modo que o nível "especialidade" mede a prática de codificação, não a utilização. A conclusão metodológica é a mais sólida do projeto: <strong>dados públicos dizem onde investigar; não dizem se há agenda suficiente.</strong></li>
+      <li><strong>O território, ao contrário, é observável e robusto.</strong> Mais de 90 % das consultas dos residentes do município-sede são realizadas no próprio município; os municípios vizinhos enviam 80–90 % das suas para ele; para internação, UTI, urgência e quimioterapia, existência, contratação e utilização concordam. É o módulo que um segundo produto poderia explorar — sem a palavra "capacidade".</li>
+    </ul>
+
+    <!-- ===== 8. SCREENSHOTS ===== -->
+    <!--
+      PARA ADICIONAR OS PRINTS: tire capturas da versão publicada (pseudonimizada), salve em assets/img/case-02/
+      como 00-como-ler.png, 01-sintese.png ... e troque este comentário por blocos <figure class="wide">, como no Case 01.
+    -->
+
+    <!-- ===== 9. LIMITAÇÕES ===== -->
+    <h2>Limitações</h2>
+    <ul>
+      <li><strong>Cadastro não é agenda.</strong> Profissional no CNES ou na rede declarada não significa horas dedicadas ao plano nem vaga disponível. O painel mede oferta aparente e o diz em todas as páginas.</li>
+      <li><strong>Reclamação formal é a ponta do iceberg.</strong> Só chega à ANS quem já passou pela operadora; a taxa é um sinal, não a medida da insatisfação.</li>
+      <li><strong>Cada fonte tem seu relógio.</strong> Carteira e reclamações chegam com dois meses de atraso; a faixa de monitoramento, com quase dois anos. Ler "faixa 1" como "hoje" é um erro que a página 06 previne, mas não impede.</li>
+      <li><strong>O TISS público não identifica a operadora</strong> e a codificação de especialidade varia por operadora; só o nível municipal é comparável.</li>
+      <li><strong>A versão publicada é perturbada.</strong> Posições relativas podem variar em uma ou duas posições de ranking em relação ao estudo original.</li>
+      <li><strong>Não há juízo de suficiência.</strong> O painel prioriza onde aprofundar; a resposta sobre se a rede dá conta está na agenda, na fila e no cliente oculto.</li>
+    </ul>
+
+    <!-- ===== 10. CONCLUSÃO ===== -->
+    <h2>Conclusão</h2>
+    <p>
+      O produto final é uma ferramenta de <strong>sinal e priorização</strong>: em nove páginas, organiza tudo o que é
+      público sobre uma operadora, compara com pares na mesma régua e termina cada leitura com a frase que o dado
+      autoriza — e só ela. O que o projeto mostrou empiricamente, testando cada alternativa até o fim, é que a
+      fronteira dos dados públicos passa pela agenda: eles conseguem dizer onde olhar, com quem comparar e que
+      tendência acompanhar; não conseguem dizer se há médico suficiente. Um case que terminasse com uma métrica
+      inventada de "suficiência" seria mais vistoso e menos verdadeiro.
+    </p>
+    <p>A agenda que o painel autoriza para a operadora âncora é localizada: o município-sede (onde tudo se concentra), os dois ou três municípios com carteira relevante e sem prestador direto, o tema "cobertura" nas reclamações e a tendência de alta do IGR. O resto é trabalho de campo.</p>
+
+    <nav class="case-nav">
+      <a href="case-01-ensino-superior.html">← Case 01</a>
+      <a href="../projetos.html">Todos os projetos →</a>
+    </nav>
+
+  </div>
+</main>
+
+<footer class="site">
+  <div class="container">
+    Francisco Biral Klas · <a href="https://www.linkedin.com/in/francisco-klas/" target="_blank" rel="noopener">LinkedIn</a>
+    · Todos os projetos usam exclusivamente dados públicos ou sintéticos.
+  </div>
+</footer>
+
+</body>
+</html>
