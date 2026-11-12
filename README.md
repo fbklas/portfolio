@@ -13,7 +13,9 @@ site/
 ├── projetos.html                       Listagem de projetos
 ├── projetos/
 │   ├── case-01-ensino-superior.html    Case 01
-│   ├── case-02-market-intelligence.html Case 02
+│   ├── case-02-raio-x-operadora-saude.html   Case 02
+│   ├── case-03-mercado-drones-agricolas.html Case 03
+│   ├── case-02-market-intelligence.html Rascunho antigo (não é linkado; pode ser apagado)
 │   └── _template.html                  Modelo para novos cases (não é linkado no site)
 ├── assets/
 │   ├── style.css                       Único arquivo de estilo

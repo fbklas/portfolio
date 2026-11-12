@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Case 03 — Mercado brasileiro de drones agrícolas de pulverização — Francisco Biral Klas</title>
+  <meta name="description" content="Dimensionamento do mercado brasileiro de drones agrícolas de pulverização (25–150 kg) só com dados públicos: importações, frota registrada, base agrícola e preços — e a fronteira entre o que se observa e o que ainda é premissa. Painel Power BI de nove páginas.">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="container">
+    <a class="brand" href="../index.html">Francisco Biral Klas</a>
+    <nav>
+      <a href="../index.html">Início</a>
+      <a href="../projetos.html" aria-current="page">Projetos</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <!-- ===== CABEÇALHO DO CASE ===== -->
+    <div class="case-header">
+      <span class="tag muted small">CASE 03 · MARKET INTELLIGENCE — AGRONEGÓCIO</span>
+      <h1>Mercado brasileiro de drones agrícolas de pulverização</h1>
+      <p class="subtitle">De que tamanho é o mercado de drones de pulverização de 25 a 150 kg no Brasil — medido por importações, frota registrada, base agrícola e preços — e, com a mesma precisão, quais partes da resposta ainda são premissa.</p>
+    </div>
+
+    <dl class="case-meta">
+      <dt>Área</dt><dd>Market Intelligence · Dimensionamento de mercado · Business Analysis</dd>
+      <dt>Ferramentas</dt><dd>Power BI (modelo tabular, 67 medidas DAX, projeto PBIP/TMDL/PBIR gerado por código), Python, Excel (Power Query)</dd>
+      <dt>Fontes</dt><dd>Comex Stat/MDIC (microdados de comércio exterior), ANAC (cadastro de aeronaves não tripuladas), IBGE (Produção Agrícola Municipal), CONAB, fichas técnicas de fabricantes, preços em revendas e compras públicas (PNCP), Embrapa e literatura agronômica</dd>
+      <dt>Entregáveis</dt><dd>Painel Power BI com 9 páginas · modelo analítico em Excel · guia metodológico · pipeline reproduzível em Python com 415 verificações automáticas</dd>
+      <dt>Período</dt><dd>Setembro–novembro de 2026</dd>
+    </dl>
+
+    <!-- ===== RELATÓRIO INTERATIVO (Power BI) ===== -->
+    <h2>Relatório interativo</h2>
+    <p class="links">
+      <a class="btn" href="https://app.powerbi.com/view?r=eyJrIjoiM2MxZjY4OTUtNzA1Yy00ZGJjLWE5N2ItOGI0ZjA2MGE1ODc0IiwidCI6IjU2OWZhODExLTAwZmItNDJmYy05YmU3LWQzZWZjOTkyNDgxMCJ9" target="_blank" rel="noopener">Abrir relatório no Power BI (tela cheia)</a>
+    </p>
+    <div class="powerbi wide">
+      <div class="frame">
+        <iframe title="Mercado de drones agrícolas — Power BI" src="https://app.powerbi.com/view?r=eyJrIjoiM2MxZjY4OTUtNzA1Yy00ZGJjLWE5N2ItOGI0ZjA2MGE1ODc0IiwidCI6IjU2OWZhODExLTAwZmItNDJmYy05YmU3LWQzZWZjOTkyNDgxMCJ9" allowfullscreen="true"></iframe>
+      </div>
+      <p class="note">Relatório interativo de nove páginas; navegue com as setas no rodapé. Em telas pequenas, recomenda-se abrir em tela cheia ou no desktop.</p>
+    </div>
+    <p class="small muted">
+      <strong>Sobre os dados publicados.</strong> O estudo foi feito sobre estatísticas públicas. Na versão publicada,
+      os volumes de base (unidades, área, preços) foram perturbados em até ±40 % com semente fixa, de forma coerente
+      entre as tabelas, e os vendedores das observações de preço aparecem com pseudônimos. As <em>relações</em> —
+      participações, razões e tendências — ficam próximas das do estudo original, e o peso por unidade foi
+      preservado; os valores absolutos são <em>derivados</em> e não devem ser citados como oficiais. Os números
+      desta página são os da versão publicada. O objeto do case é o método.
+    </p>
+
+    <!-- ===== 1. PROBLEMA DE NEGÓCIO ===== -->
+    <h2>Problema de negócio</h2>
+    <p>
+      Quem avalia entrar, investir ou distribuir no mercado brasileiro de drones agrícolas de pulverização precisa de
+      três números antes de qualquer plano: <strong>quantas máquinas entram por ano, quantas estão em operação e até
+      onde esse parque pode crescer</strong>. Não existe estatística oficial de vendas, e as declarações que circulam no setor — "30 mil importados",
+      "35 mil em operação" — não vêm acompanhadas de base verificável.
+    </p>
+    <p>
+      A pergunta do projeto foi: <strong>quanto desse dimensionamento pode ser sustentado só com fontes públicas,
+      oficiais e rastreáveis — e onde exatamente a resposta passa a depender de premissa?</strong> O recorte é a
+      classe de 25 a 150 kg de peso máximo de decolagem, que concentra os equipamentos profissionais de pulverização.
+    </p>
+
+    <!-- ===== 2. CONTEXTO ===== -->
+    <h2>Contexto</h2>
+    <p>
+      Quase todo drone agrícola vendido no Brasil é importado, e toda importação deixa rastro nos microdados do
+      Comex Stat: mês, código fiscal (NCM), país de origem, estado do importador, quantidade, peso e valor. O
+      problema é que o código próprio para drones só existe desde abril de 2022; antes disso — e, em parte, depois —
+      os equipamentos entravam como "pulverizadores" (NCM 8424.49), misturados a centenas de milhares de
+      pulverizadores costais.
+    </p>
+    <p>
+      Do outro lado, todo drone acima de 250 g precisa de cadastro na ANAC, o que cria uma segunda contagem,
+      independente da primeira. E a demanda potencial pode ser aproximada pela área plantada do IBGE, desde que se
+      saiba quantas vezes cada cultura é pulverizada, que fração dessas aplicações um drone consegue fazer e quantos
+      hectares uma máquina trata por ano. O projeto confronta as três frentes e mostra onde elas concordam.
+    </p>
+
+    <!-- ===== 3. FONTES DE DADOS ===== -->
+    <h2>Fontes de dados</h2>
+    <table>
+      <thead><tr><th>Fonte</th><th>Conteúdo</th><th>Uso no projeto</th></tr></thead>
+      <tbody>
+        <tr><td>Comex Stat / MDIC — microdados de importação e exportação</td><td>Quantidade estatística, peso líquido e valor FOB por mês, NCM, país, UF e via (2010–ago/2026)</td><td>Série de entradas formais; teste físico de peso por unidade; fluxos em códigos vizinhos</td></tr>
+        <tr><td>NCM e soluções de consulta da Receita Federal</td><td>Histórico de classificação fiscal dos drones agrícolas</td><td>Explicar a quebra de série de 2022 e delimitar o universo "candidato" em 8424.49</td></tr>
+        <tr><td>ANAC — cadastro de aeronaves não tripuladas (SISANT)</td><td>Drones agrícolas registrados por ano; cadastros válidos por fabricante e modelo</td><td>Contraprova independente das importações; composição da frota</td></tr>
+        <tr><td>IBGE — Produção Agrícola Municipal</td><td>Área plantada e colhida de 72 produtos (2010–2024)</td><td>Base agrícola: 14 culturas, hectare-ciclo e hectare físico</td></tr>
+        <tr><td>CONAB — séries históricas de safras</td><td>Área por safra (1ª, 2ª, 3ª)</td><td>Separar a terra que é plantada duas vezes no ano</td></tr>
+        <tr><td>Fichas técnicas oficiais de fabricantes</td><td>Peso máximo de decolagem, peso com e sem bateria, tanque e rendimento declarado de 27 modelos</td><td>Confronto com o peso por unidade importada; definição do escopo 25–150 kg</td></tr>
+        <tr><td>Revendas, distribuidores e compras públicas (PNCP)</td><td>81 observações de preço em reais, por modelo e configuração</td><td>Converter unidades em valor; diferença entre aeronave e kit</td></tr>
+        <tr><td>Embrapa, institutos de pesquisa, releases setoriais e bases oficiais de outros países</td><td>Número de aplicações por cultura; área tratada por drone por ano</td><td>Faixas de premissa do teto estrutural, com a evidência de cada uma</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">Nenhum dado confidencial e nenhuma base paga de comércio exterior. Cada número do estudo carrega a fonte e uma classificação: observado, calculado, estimado, inferido ou não confirmado.</p>
+
+    <!-- ===== 4. FERRAMENTAS ===== -->
+    <h2>Ferramentas utilizadas</h2>
+    <ul>
+      <li><strong>Python</strong> — ingestão dos microdados do Comex com conferência contra os totais oficiais e hash de cada arquivo bruto; construção das 14 tabelas do modelo; 415 verificações automáticas antes de cada publicação (integridade dos dados, referências DAX, geometria das páginas e os fatos afirmados em cada título).</li>
+      <li><strong>Power BI</strong> — modelo tabular em esquema estrela com 67 medidas DAX; o projeto inteiro (TMDL do modelo e PBIR do relatório) é <em>gerado por script</em>, e cada visual reproduz a forma de um visual já gravado pelo Power BI Desktop em outro projeto, conferida automaticamente contra um vocabulário de 209 exemplares. Nenhuma página foi desenhada à mão.</li>
+      <li><strong>Excel (Power Query)</strong> — modelo analítico paralelo, conectado às mesmas bases, em que cada premissa é uma célula visível e o resultado fica "pendente" enquanto ela não for preenchida.</li>
+    </ul>
+
+    <!-- ===== 5. METODOLOGIA ===== -->
+    <h2>Metodologia</h2>
+    <ol>
+      <li><strong>Fluxo, estoque e valor nunca se misturam.</strong> Importação é fluxo; frota é estoque; FOB não é preço de varejo. Cada medida do modelo declara de que tipo é.</li>
+      <li><strong>Unidade estatística não é drone por definição.</strong> O Comex conta "unidades"; para saber se cada uma é uma aeronave, o peso líquido é dividido pela quantidade, linha a linha, e confrontado com o peso oficial dos modelos vendidos no país.</li>
+      <li><strong>Códigos vizinhos ficam separados, nunca somados em silêncio.</strong> O universo candidato em 8424.49 (origem China e Hong Kong, 20 a 120 kg por unidade) e um lote regular em 8806.99 entram como faixas explícitas — zero, metade ou tudo —, não como estimativa.</li>
+      <li><strong>Contraprova por fonte independente.</strong> A série de importações é confrontada, ano a ano, com os drones agrícolas registrados na ANAC.</li>
+      <li><strong>Dois métodos de dimensionamento que não se alimentam um do outro.</strong> Pelo lado da oferta: importações menos baixas por vida útil, mais as parcelas de classificação incerta. Pelo lado da demanda: área × aplicações por cultura × aptidão para drone ÷ hectares tratados por máquina por ano.</li>
+      <li><strong>Premissa é faixa, não ponto.</strong> Cada input sem dado observado entra com piso, teto e a evidência que os sustenta; três cenários mostram quanto cada um move o resultado.</li>
+      <li><strong>O título de cada gráfico é uma afirmação testada.</strong> Antes de publicar, o pipeline recalcula o fato que cada título afirma a partir dos dados carregados; se a afirmação deixar de ser verdadeira, o build falha.</li>
+    </ol>
+
+    <!-- ===== 6. PRINCIPAIS ANÁLISES ===== -->
+    <h2>Principais análises (as nove páginas)</h2>
+    <ul>
+      <li><strong>00 · Síntese</strong> — os quatro números observados, a comparação entre importação e registro, e o que falta para fechar o tamanho do mercado.</li>
+      <li><strong>01 · Importações</strong> — série mensal de unidades e valor por unidade, países de origem, estados de desembaraço e a tabela ano a ano.</li>
+      <li><strong>02 · Uma unidade é uma aeronave?</strong> — distribuição das unidades por faixa de peso, os modelos reais que pesam aquilo, cada linha do Comex em peso × valor, e um mapa de calor faixa × ano.</li>
+      <li><strong>03 · O que pode estar fora do código</strong> — o universo candidato no código antigo, o lote no código residual e as exportações, que indicam fabricação nacional.</li>
+      <li><strong>04 · Frota registrada</strong> — registros por ano contra importação acumulada, cadastros por modelo com a classe de peso, e a participação por fabricante.</li>
+      <li><strong>05 · Base agrícola</strong> — área por cultura, quantas vezes cada uma é pulverizada (piso e teto) e de onde vem cada faixa.</li>
+      <li><strong>06 · Preços</strong> — mediana por porte e por configuração (só a aeronave, kit padrão, kit ampliado) e as observações uma a uma.</li>
+      <li><strong>07 · Cenários</strong> — a ponte da importação à frota, a frota e o teto em três combinações de premissas, e a evidência por trás de cada faixa. É a única página com números estimados, e o título diz isso.</li>
+      <li><strong>08 · Método e fontes</strong> — como cada número é classificado, o que o relatório não afirma, as fontes e as lacunas em aberto.</li>
+    </ul>
+
+    <!-- ===== 7. PRINCIPAIS INSIGHTS ===== -->
+    <h2>Principais insights</h2>
+    <ul>
+      <li><strong>O código fiscal próprio é um piso, não o mercado.</strong> Até o fim de 2024 havia cerca de 1,2 drone agrícola registrado na ANAC para cada unidade importada nos códigos de 25–150 kg desde a criação deles. Como cada registro exige uma aeronave física, a diferença só fecha com máquinas que entraram pelo código antigo de pulverizadores ou que foram produzidas no país.</li>
+      <li><strong>O salto de 2025 é, em parte, reclassificação.</strong> O volume importado mais que dobra de 2024 para 2025, mas no mesmo ano ele migra de um código para outro dentro da mesma classe de peso, e a razão entre registro e importação acumulada cai de 1,2 para cerca de 0,8. Ler a série como crescimento puro de demanda superestima o mercado.</li>
+      <li><strong>Uma unidade estatística é, na maior parte, uma aeronave.</strong> Entre 73 % e 88 % das unidades, conforme o código, caem em faixas de peso que correspondem a modelos reais, e os dois picos da distribuição coincidem com o peso oficial das duas famílias de aeronaves mais registradas. Um grupo de unidades de 80 a 90 kg, que surge em 2025, não corresponde a nenhum modelo da classe: é uma pergunta em aberto, não um ajuste.</li>
+      <li><strong>A geografia do Comex não é a do uso.</strong> Mais de 99 % das unidades vêm da China e de Hong Kong e o desembaraço se concentra em três estados portuários; nada disso diz onde os drones operam — por isso o painel não tem mapa.</li>
+      <li><strong>A frota registrada é concentrada e já ultrapassa o escopo.</strong> Três modelos de um mesmo fabricante somam 45 % dos cadastros agrícolas válidos, e um modelo de 175 kg — fora da classe de 25–150 kg — já responde por cerca de 5 %. A definição de escopo que fazia sentido em 2022 começa a deixar de fora o equipamento que mais cresce.</li>
+      <li><strong>O indicador mais citado do setor conta outra coisa.</strong> As "aplicações por cultura" divulgadas pela indústria de defensivos medem produto × aplicação, não entradas de máquina na lavoura; usá-las como passadas multiplicaria a demanda por três a cinco. Ponderadas pela área, as passadas ficam entre 5 e 10 por hectare-ciclo.</li>
+      <li><strong>A frota se estima com alguma firmeza; o teto, não.</strong> Entre o cenário conservador e o expansivo, a frota estimada varia 1,6 vez; o teto estrutural, vinte vezes. Área é observada, mas aplicações, aptidão e capacidade por máquina são premissas com faixas largas — e as médias observadas em países com estatística nacional (700 a 1.000 hectares tratados por drone por ano) ficam muito abaixo do que as fichas técnicas sugerem.</li>
+      <li><strong>O que se compra pesa mais que o modelo.</strong> O kit padrão — aeronave, três ou quatro baterias e carregador — custa cerca de 90 % a mais que a aeronave sozinha. Um valor de mercado calculado "por drone" muda quase pela metade conforme a configuração escolhida.</li>
+    </ul>
+
+    <!-- ===== 8. SCREENSHOTS ===== -->
+    <!--
+      PARA ADICIONAR OS PRINTS: tire capturas da versão publicada (perturbada), salve em assets/img/case-03/
+      como 00-sintese.png, 01-importacoes.png ... e troque este comentário por blocos <figure class="wide">, como no Case 01.
+    -->
+
+    <!-- ===== 9. LIMITAÇÕES ===== -->
+    <h2>Limitações</h2>
+    <ul>
+      <li><strong>Importação não é venda nem frota.</strong> A série mede entradas formais; estoque em distribuidor, perdas e baixas não aparecem nela.</li>
+      <li><strong>Cadastro não é frota ativa.</strong> O registro na ANAC vale 24 meses e a base pública só lista os válidos; um drone parado pode estar cadastrado e um ativo pode estar vencido.</li>
+      <li><strong>O teste de peso torna a leitura plausível; não a prova.</strong> Cerca de 1 % das unidades está em linhas atípicas, mantidas no estudo como triagem e não excluídas.</li>
+      <li><strong>Fabricação nacional não está quantificada.</strong> As exportações e os cadastros de fabricantes brasileiros mostram que ela existe; quanto se vende no mercado interno depende de entrevistas.</li>
+      <li><strong>Vida útil, aptidão e capacidade por máquina não têm medida pública no Brasil.</strong> Os cenários usam faixas apoiadas em garantias, estrutura fundiária e benchmarks de outros países.</li>
+      <li><strong>Preços são mediana simples</strong> de observações de 2026, sem ponderar pelo mix de portes; valor de frota é estoque a preço de reposição, não receita anual.</li>
+      <li><strong>A versão publicada é perturbada.</strong> Proporções e tendências ficam próximas das do estudo; os valores absolutos, não.</li>
+    </ul>
+
+    <!-- ===== 10. CONCLUSÃO ===== -->
+    <h2>Conclusão</h2>
+    <p>
+      Com dados públicos dá para afirmar bastante: quanto entrou, de onde, por qual código e a que valor; que a
+      contagem oficial de importações subestima o parque até 2024; que a unidade estatística se comporta como
+      aeronave; quais modelos compõem a frota registrada; e quanto custa cada configuração. O que não dá para
+      afirmar é o tamanho do teto — e o projeto mostra por quê, em vez de escolher um número: três das quatro
+      parcelas da conta são premissas, e trocar uma delas dentro da faixa plausível muda o resultado várias vezes.
+    </p>
+    <p>
+      O produto final é um painel que separa, página a página, o que é observado do que é estimado, e uma lista
+      curta do que fecharia cada lacuna: a descrição da mercadoria nas importações do código antigo, o cadastro da
+      ANAC acompanhado por número de série, as planilhas oficiais de custo de produção e entrevistas com
+      prestadores de serviço. Um dimensionamento que terminasse num único número seria mais fácil de citar e mais
+      difícil de defender.
+    </p>
+
+    <nav class="case-nav">
+      <a href="case-02-raio-x-operadora-saude.html">← Case 02</a>
+      <a href="../projetos.html">Todos os projetos →</a>
+    </nav>
+
+  </div>
+</main>
+
+<footer class="site">
+  <div class="container">
+    Francisco Biral Klas · <a href="https://www.linkedin.com/in/francisco-klas/" target="_blank" rel="noopener">LinkedIn</a>
+    · Todos os projetos usam exclusivamente dados públicos ou sintéticos.
+  </div>
+</footer>
+
+</body>
+</html>
