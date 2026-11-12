@@ -150,6 +150,25 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 48px 0; }
 
 .project-list .meta { font-size: 14px; color: var(--muted); }
 
+/* thumbnail do projeto (home e lista de projetos) */
+.project-list .thumb {
+  display: block;
+  margin: 0 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--bg-soft);
+}
+.project-list .thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.project-list .thumb:hover img { opacity: 0.92; }
+
+
 /* ---------- Página de case ---------- */
 
 .case-header { margin-bottom: 8px; }
